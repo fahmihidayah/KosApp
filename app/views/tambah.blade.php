@@ -74,38 +74,63 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-12">
-                            <h1 class="page-header">Daftar Kos</h1>
+                            <h1 class="page-header">Kos</h1>
                         </div>
                         <!-- /.col-lg-12 -->
-                        <table class="table table-striped table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>id</th>
-                                    <th>Nama</th>
-                                    <th>Alamat</th>
-                                    <th>Longitude</th>
-                                    <th>Latitude</th>
-                                </tr>
-                            </thead>
-                            @foreach($list_kos as $kos)
-                            <tbody>
-                                <tr>
-                                    <td>{{$kos->id}}</td>
-                                    <td>{{$kos->nama}}</td>
-                                    <td>{{$kos->alamat}}</td>
-                                    <td>{{$kos->longitude}}</td>
-                                    <td>{{$kos->latitude}}</td>
-                                    <td> 
-                                        <!--<a href="{{URL::to('edit/'.$kos->id)}}" class="fa fa-edit btn btn-primary"></a>-->
-                                        <a href="{{URL::to('/edit/'.$kos->id)}}" class="fa fa-edit btn btn-primary"></a>
-                                    </td>
-                                    <td> 
-                                       <a href="{{URL::to('delete/'.$kos->id)}}" class="fa fa-trash-o btn btn-danger"></a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                            @endforeach
-                        </table>
+                        <div class="row">
+
+                            <div class="col-lg-6">
+                                <div class="panel panel-default">
+
+                                    <div class="panel-body">
+                                        {{Form::open(array('url' => 'simpan'))}}
+                                        <div class="form-group">
+                                            <label>Nama Kos</label>
+                                            {{Form::text('nama', ''.$kos->nama, array('class'=> 'form-control'))}}
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Alamat Kos</label>
+                                            {{Form::text('alamat', ''.$kos->alamat, array('class'=> 'form-control'))}}
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Longitude</label>
+                                            {{Form::text('longitude', ''.$kos->longitude, array('class'=> 'form-control'))}}
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Latitude</label>
+                                            {{Form::text('latitude', ''.$kos->latitude, array('class'=> 'form-control'))}}
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Jarak</label>
+                                            <select name="jarak" class="form-control">
+                                                @for($i = 0 ;$i <= 100; $i++)
+                                                <option>{{$i}}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Harga</label>
+                                            <select name="harga" class="form-control">
+                                                @for($i = 0; $i<= 100; $i++)
+                                                <option>{{$i}}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Suasana</label>
+                                            <select name="suasana" class="form-control">
+                                                @for($i = 0; $i <= 100; $i++)
+                                                <option>{{$i}}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-default">Simpan</button>
+                                        {{Form::close()}}
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- /.row -->
                 </div>

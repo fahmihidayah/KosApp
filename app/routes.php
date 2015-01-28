@@ -17,17 +17,47 @@ Route::get('/', function()
 });
 
 
-Route::post('/api/wp', 'HomeController@doWeightProduct');
-
-
-
-Route::get('login', function(){
-	return View::make('login');
-});
-
-Route::get('admin', function(){
-	return View::make('admin');
-});
-
+/**
+route for user
+**/
 Route::get('/main', 'HomeController@main');
 Route::post('/find', 'HomeController@findKos');
+Route::post('/api/wp', 'HomeController@doWeightProduct');
+Route::get('show/{id}', 'HomeController@show');
+
+/**
+route for admin
+**/
+
+Route::get('login', function()
+{
+	if(Auth::check())
+	{
+		$list_kos = Kos::all();
+		return Redirect::to('admin')->with('list_kos', $list_kos);
+	}
+	else 
+	{
+		return View::make('login');
+	}
+});
+
+Route::post('login', 'HomeController@login');
+Route::get('admin', 'HomeController@admin');
+
+Route::get('tambah' , 'HomeController@tambah');
+Route::post('simpan', 'HomeController@simpan');
+
+Route::get('edit/{id}','HomeController@edit')->where('id','[0-9]+');
+Route::post('update/{id}','HomeController@update');
+
+Route::get('delete/{id}', 'HomeController@delete');
+
+Route::get('logout', 'HomeController@logout');
+
+Route::get('tentang', function()
+{
+	return View::make('tentang');
+});
+
+

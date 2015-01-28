@@ -20,6 +20,10 @@ class HomeController extends BaseController {
 		return View::make('hello');
 	}
 
+	/**
+	test weight product api
+	**/
+
 	public function doWeightProduct()
 	{
 		$jarak = (int)Input::get('jarak');
@@ -30,7 +34,7 @@ class HomeController extends BaseController {
 
 		$kriteria_jarak = $jarak / $total;
 		$kriteria_harga = $harga / $total;
-		$kriteria_suasana = $harga / $total;
+		$kriteria_suasana = $suasana / $total;
 
 		$total_nilai = 0;
 		$list_kost = Kos::all();
@@ -48,7 +52,9 @@ class HomeController extends BaseController {
 		return Kos::orderBy('nilai_akhir', 'DESC')->get();
 
 	}
-
+	/**
+	user page controller
+	**/
 	public function main()
 	{
 		return View::make('/main')->with('list_kos', array());// Redirect::to('main')->with('list_kos', array());
@@ -59,6 +65,7 @@ class HomeController extends BaseController {
 		$jarak_str = Input::get('jarak');
 		$harga_str = Input::get('harga');
 		$suasana_str = Input::get('suasana');
+		$jalan = '%'. Input::get('jalan') . '%';
 
 		$jarak = 0;
 		$harga = 0;
@@ -70,7 +77,7 @@ class HomeController extends BaseController {
 		}
 		else if($jarak_str == "Sedang")
 		{
-			$jarak = 4;
+			$jarak = 3;
 		}
 		else if($jarak_str =="Jauh")
 		{
@@ -119,37 +126,149 @@ class HomeController extends BaseController {
 
 		$kriteria_jarak = $jarak / $total;
 		$kriteria_harga = $harga / $total;
-		$kriteria_suasana = $harga / $total;
+		$kriteria_suasana = $suasana / $total;
 
 		$total_nilai = 0;
-		$list_kost = Kos::all();
+		$list_kost = Kos::where('alamat', 'LIKE', $jalan)->get();
 		foreach ($list_kost as $kos) {
 			$kos->nilai_kos = pow($kos->nilai_bobot_harga, $kriteria_harga) * pow($kos->nilai_bobot_jarak, $kriteria_jarak) * pow($kos->nilai_bobot_suasana, $kriteria_suasana);
+			// echo 'pow('.$kos->nilai_bobot_harga.', '. $kriteria_harga.') ='. pow($kos->nilai_bobot_harga, $kriteria_harga) . '<br>';
 			$kos->save();
 			$total_nilai = $total_nilai + $kos->nilai_kos;
 		}
-
 		foreach ($list_kost as $kos) {
 			$kos->nilai_akhir = $kos->nilai_kos / $total_nilai;
 			$kos->save();
 		}		
-		$list_kos = Kos::orderBy('nilai_akhir', 'DESC')->get();
+		$list_kos = Kos::where('alamat', 'LIKE', $jalan)->orderBy('nilai_akhir', 'DESC')->get();
 		return View::make('/main')->with('list_kos', $list_kos);
+		// echo $jarak . ' ' . $harga . ' ' . $suasana .
+		// '<br>' . $kriteria_jarak. ' ' . $kriteria_harga. ' ' . $kriteria_suasana; 
 	}
-
-
-
+	/**
+	admin page
+	**/
 	public function login()
 	{
 		$email = Input::get('email');
 		$password = Input::get('password');
-		if(Auth::attempt(['email' => $email, 'password' => $password], false))
+		if(Auth::attempt(['email' => $email, 'password' => $password], true))
 		{
 			return Redirect::to('admin');
 		}
 		else 
 		{
+			return View::make('login');
+		}
+	}
+
+	public function logout()
+	{
+		Auth::logout();
+		return Redirect::to('login');
+	}
+
+	/**
+	
+	**/
+	
+	public function admin()
+	{
+		if(Auth::check())
+		{
+			$list_kos = Kos::all();
+			return View::make('admin')->with('list_kos', $list_kos);
+		}
+		else 
+		{	
+			
 			return Redirect::to('login');
 		}
+	}
+
+	public function tambah()
+	{
+		if(Auth::check())
+		{
+			return View::make('tambah')->with('kos', new Kos());
+		}
+		else 
+		{	
+
+			return Redirect::to('login');
+		}
+	}
+
+	public function simpan()
+	{
+		$kos = new Kos();
+		$kos->nama = Input::get('nama');
+		$kos->alamat = Input::get('alamat');
+		$kos->longitude = Input::get('longitude');
+		$kos->latitude = Input::get('latitude');
+		$kos->nilai_bobot_harga = Input::get('harga');
+		$kos->nilai_bobot_jarak = Input::get('jarak');
+		$kos->nilai_bobot_suasana = Input::get('suasana');
+		$kos->nilai_harga = HomeController::get_nilai(Input::get('harga'));
+		$kos->nilai_jarak = HomeController::get_nilai(Input::get('jarak'));
+		$kos->nilai_suasana = HomeController::get_nilai(Input::get('suasana'));
+		$kos->save();
+		return Redirect::to('admin');
+	}
+
+	public function edit($id)
+	{	
+		$kos = Kos::find($id);
+		return View::make('edit')->with('kos', $kos);
+	}
+
+	public function update($id)
+	{
+		$kos = Kos::find($id);
+		$kos->nama = Input::get('nama');
+		$kos->alamat = Input::get('alamat');
+		$kos->longitude = Input::get('longitude');
+		$kos->latitude = Input::get('latitude');
+		$kos->nilai_bobot_harga = Input::get('harga');
+		$kos->nilai_bobot_jarak = Input::get('jarak');
+		$kos->nilai_bobot_suasana = Input::get('suasana');
+		$kos->nilai_harga = HomeController::get_nilai(Input::get('harga'));
+		$kos->nilai_jarak = HomeController::get_nilai(Input::get('jarak'));
+		$kos->nilai_suasana = HomeController::get_nilai(Input::get('suasana'));
+		$kos->save();
+		return Redirect::to('admin');
+	}
+
+	public function delete($id)
+	{
+		$kos = Kos::find($id);
+		$kos->delete();
+		return Redirect::to('admin');
+	}
+
+	public function show($id)
+	{
+		$kos = Kos::find($id);
+		return View::make('show')->with('kos', $kos);
+	}
+
+	public function get_nilai($value)
+	{
+		if($value >= 75 && $value <= 100){
+			return 4;
+		}
+		else if($value >= 50 && $value <= 74){
+			return 3;
+		}
+		else if($value >= 25 && $value <= 49){
+			return 2;
+		}
+		else if($value >= 1 && $value <= 24){
+			return 1;
+		}
+		else {
+			return 0;
+		}
+
 	}
 }

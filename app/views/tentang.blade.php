@@ -48,91 +48,38 @@
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="navbarCollapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="{{URL::to('main')}}" target="_blank">Cari Kos</a></li>
-					<li><a href="{{URL::to('tentang')}}" target="_blank">Tentang</a></li>
+					<li ><a href="{{URL::to('main')}}">Cari Kos</a></li>
+					<li class="active"><a href="{{URL::to('tentang')}}">Tentang</a></li>
 				</ul>
 
 			</div>
 		</div>
 	</nav>
 	<div class="container">
+		<div class="row"><h1 class="page-header"></h1></div>
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
-					<div class="panel-heading">Cari Kos</div>
-					{{Form::open(array('url' => 'find'))}}	
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-lg-2">
-								<label>Nama Jalan</label>
-								<input name="jalan" class="form-control" placeholder="Jalan">
-							</div>
+					<div class="panel-primary">
 
-							<div class="col-lg-2">
-								<label>Jarak</label>
-								<select name="jarak" class="form-control">
-									<option>Dekat</option>
-									<option>Sedang</option>
-									<option>Jauh</option>
-									<option>Sangat Jauh</option>
-								</select>
-							</div>
-
-							<div class="col-lg-2">
-								<label>Harga</label>
-								<select name="harga" class="form-control">
-									<option>Murah</option>
-									<option>Sedang</option>
-									<option>Mahal</option>
-									<option>Sangat Mahal</option>
-								</select>
-							</div>
-
-							<div class="col-lg-2">
-								<label>Suasan</label>
-								<select name="suasana" class="form-control">
-									<option>Nyaman</option>
-									<option>Sedang</option>
-									<option>Tidak Nyaman</option>
-									<option>Sangat Tidak Nyaman</option>
-								</select>
-							</div>
-
-						</div>
-						<br>
-						<button type="submit" class="btn btn-primary">Cari</button>
 					</div>
-					{{Form::close()}}
-				</div>
+					<div class="panel-body">
 
-			</div>
-		</div>
-		<div class="panel panel-default">
-			<div class="panel-heading">Hasil</div>
-			<div class="panel-body">
-				<table class="table table-striped table-bordered table-hover">
-					<thead>
-						<tr>
-							<th>Id</th>
-							<th>Nama Kos</th>
-						</tr>
-					</thead>
-					@foreach($list_kos as $kos)
-					<tbody>
-						<tr>
-							<td>{{$kos->id}}</td>
-							<td>{{$kos->nama}}</td>
-							<td>
-								<a href="{{URL::to('show/'.$kos->id)}}" class="fa btn  fa-search btn-primary"></a>
-							</td>
-						</tr>							
-					</tbody>
-					@endforeach
-				</table>
+						<div class="form-group">
+							
+							<div class="jumbotron">
+							<h1>Aplikasi Kos V.1</h1>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing.</p>
+								<p><a class="btn btn-primary btn-lg" role="button">Learn more</a>
+								</p>
+							</div>
+						</div>
+
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-
 
 </div>
 </body>

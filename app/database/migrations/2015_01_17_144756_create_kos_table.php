@@ -16,13 +16,19 @@ class CreateKosTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('nama');
+			$table->string('alamat');
+			$table->double('longitude');
+			$table->double('latitude');
+			
 			$table->double('nilai_bobot_harga');
 			$table->double('nilai_bobot_jarak');
 			$table->double('nilai_bobot_suasana');
-			$table->double('nilai_jarak');
+
 			$table->double('nilai_harga');
+			$table->double('nilai_jarak');
 			$table->double('nilai_suasana');
 			$table->double('nilai_kos');
+			
 			$table->double('nilai_akhir');
 			$table->timestamps();
 		});
