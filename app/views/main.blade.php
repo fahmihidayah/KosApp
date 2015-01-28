@@ -48,14 +48,15 @@
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="navbarCollapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="{{URL::to('main')}}" target="_blank">Cari Kos</a></li>
-					<li><a href="{{URL::to('tentang')}}" target="_blank">Tentang</a></li>
+					<li class="active"><a href="{{URL::to('main')}}" >Cari Kos</a></li>
+					<li><a href="{{URL::to('tentang')}}">Tentang</a></li>
 				</ul>
 
 			</div>
 		</div>
 	</nav>
 	<div class="container">
+	<div class="row"><h1 class="page-header"></h1></div>
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
